@@ -1,20 +1,21 @@
+import dotenv from 'dotenv'
 import { MongoClient } from 'mongodb'
+dotenv.config()
 
-let uri = import.meta.env.VITE_MONGODB_URI
-let dbName = import.meta.env.VITE_DB_NAME
+const { MONGODB_URI, DB_NAME } = process.env
 
 let cachedClient = null
 let cachedDb = null
 
-if (!uri) {
+if (!MONGODB_URI) {
   throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
+    'Please define the MONGODB_URI environment variable inside .env'
   )
 }
 
-if (!dbName) {
+if (!DB_NAME) {
   throw new Error(
-    'Please define the MONGODB_DB environment variable inside .env.local'
+    'Please define the MONGODB_DB environment variable inside .env'
   )
 }
 
@@ -23,12 +24,12 @@ export async function connectToDatabase() {
     return { client: cachedClient, db: cachedDb }
   }
 
-  const client = await MongoClient.connect(uri, {
+  const client = await MongoClient.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
 
-  const db = await client.db(dbName)
+  const db = await client.db(DB_NAME)
 
   cachedClient = client
   cachedDb = db
