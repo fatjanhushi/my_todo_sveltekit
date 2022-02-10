@@ -1,29 +1,39 @@
+<script context="module">
+    export async function load({fetch}){
+        const res = await fetch('/todos')
+        const json = await res.json()
+
+        return{
+            props: {
+                todos: json.todos
+            }
+        }
+    }
+</script>
+
 <script>
     import Todo from '../components/Todo.svelte';
     let inputText
 
-    let todos = [
-        {
-            id: 1,
-            name: "todo1",
-            completed: false
-        },
-        {
-            id: 2,
-            name: "todo2",
-            completed: true
-        }
-    ]
+    export let todos
 
-    function addTodo(){
+    async function addTodo(){
         if(inputText){
             const todo = {
-                id: todos.length+1,
                 name: inputText,
                 completed: false
             }
             todos = [...todos, todo]
             inputText=''
+            try{
+                await fetch('/todos', {
+                method: 'POST',
+                body: JSON.stringify(todo)
+            })
+            } catch{
+                alert("There was an error adding Todu")
+            }            
+
         }else{
             alert("Input text is empty")
         }
@@ -42,12 +52,11 @@
 </section>
 
 <h1>My Todos</h1>
-
 <ol>
     {#each todos as {name, completed}}
-            <li>
-                <Todo {name} {completed}/>
-            </li>
+        <li>
+             <Todo {name} {completed}/>
+        </li>
     {/each}
 </ol>
 
