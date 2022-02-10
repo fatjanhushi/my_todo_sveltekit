@@ -12,9 +12,9 @@
 </script>
 
 <script>
-    import Todo from '../components/Todo.svelte';
-    let inputText
+    import TodoList from '../components/TodoList.svelte';
 
+    let inputText
     export let todos
 
     async function addTodo(){
@@ -31,7 +31,7 @@
                 body: JSON.stringify(todo)
             })
             } catch{
-                alert("There was an error adding Todu")
+                alert("There was an error adding Todo")
             }            
 
         }else{
@@ -39,11 +39,10 @@
         }
     }
 
-
 </script>
 
 <svelte:head>
-    <title>Index page</title>
+    <title>My ToDo App</title>
 </svelte:head>
 
 <section>
@@ -51,19 +50,4 @@
     <button on:click={addTodo} type="submit">Add TODO</button>
 </section>
 
-<h1>My Todos</h1>
-<ol>
-    {#each todos as {name, completed}}
-        <li>
-             <Todo {name} {completed}/>
-        </li>
-    {/each}
-</ol>
-
-<style>
-    li{
-        background-color: rgb(214, 214, 186);
-        margin-block: .15rem;
-        padding: .3rem;
-    }
-</style>
+<TodoList {todos}/>
