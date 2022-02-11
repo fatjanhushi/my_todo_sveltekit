@@ -5,24 +5,20 @@
     export let todo
     let editMode = false
 
-    async function updateTodo(_id){
-        todo._id=_id
-        await fetch('/todos', {
-            method: 'PUT',
-            body: JSON.stringify(todo)
-        })
+    function updateTodo(todo){
+        dispatch('handleUpdate', todo)
         editMode = false
     }
 
     function deleteTodo(_id){
-        dispatch('handleDelete',{ _id })    
+        dispatch('handleDelete', { _id })    
     }
 </script>
 
 <div class="todo-item">
-    <input type="checkbox" bind:checked={todo.completed} on:change={updateTodo(todo._id)}/>
+    <input type="checkbox" bind:checked={todo.completed} on:change={updateTodo(todo)}/>
     {#if (editMode)}
-    <input type="text" bind:value={todo.name} on:change={updateTodo(todo._id)} on:focus={()=> editMode=true} on:blur={()=>editMode=false} autofocus />
+    <input type="text" bind:value={todo.name} on:change={updateTodo(todo)} on:focus={()=> editMode=true} on:blur={()=>editMode=false} autofocus />
     {:else}
     <span>{todo.name}</span>
     {/if}

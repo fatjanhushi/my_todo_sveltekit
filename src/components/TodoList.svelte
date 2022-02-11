@@ -8,7 +8,7 @@
 <ol>
     {#each todos as todo}
         <li>
-            <TodoItem {todo} on:handleDelete/>
+            <TodoItem {todo} on:handleUpdate on:handleDelete/>
         </li>
     {/each}
 </ol>

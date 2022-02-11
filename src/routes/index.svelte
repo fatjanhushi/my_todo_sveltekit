@@ -13,9 +13,8 @@
 
 <script>
     import TodoList from '../components/TodoList.svelte';
-
-    let inputText
     export let todos
+    let inputText
 
     async function addTodo(){
         if(inputText){
@@ -24,6 +23,7 @@
                 completed: false
             }
             todos = [...todos, todo]
+            //console.log(todos.indexOf(todo))
             inputText=''
             try{
                 await fetch('/todos', {
@@ -37,6 +37,23 @@
         }else{
             alert("Input text is empty")
         }
+    }
+
+    async function updateTodo(event){
+        const _id = event.detail._id
+        const todo = todos.find(todo=>todo._id===_id)
+        const index = todos.indexOf(todo)
+        console.log(index)
+        alert('Updated index' + index)
+        try{
+            await fetch('/todos', {
+            method: 'PUT',
+            body: JSON.stringify(todo)
+        })
+        }catch{
+            alert("There was an error updating Todo")
+        }
+        
     }
 
     async function deleteTodo(event){
@@ -64,7 +81,7 @@
 </section>
 
 {#if (todos.length > 0)}
-    <TodoList {todos} on:handleDelete={deleteTodo}/>
-    {:else}
+    <TodoList {todos} on:handleDelete={deleteTodo} on:handleUpdate={updateTodo}/>
+{:else}
     <h1>No Todos</h1>
 {/if}
