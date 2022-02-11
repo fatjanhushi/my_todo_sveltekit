@@ -6,9 +6,9 @@
 <h1>My Todos</h1>
 
 <ol>
-    {#each todos as todo (todo._id)}
+    {#each todos as todo}
         <li>
-            <TodoItem {todo}/>
+            <TodoItem {todo} on:handleDelete/>
         </li>
     {/each}
 </ol>

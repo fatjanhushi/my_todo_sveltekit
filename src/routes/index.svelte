@@ -39,6 +39,19 @@
         }
     }
 
+    async function deleteTodo(event){
+        const _id = event.detail._id
+        todos = todos.filter(todo=>todo._id!==_id)
+        try{
+            await fetch('/todos', {
+            method: 'DELETE',
+            body: JSON.stringify(_id)
+        })
+        }catch{
+            alert("There was an error deleting Todo")
+        }
+    }
+
 </script>
 
 <svelte:head>
@@ -50,4 +63,8 @@
     <button on:click={addTodo} type="submit">Add TODO</button>
 </section>
 
-<TodoList {todos}/>
+{#if (todos.length > 0)}
+    <TodoList {todos} on:handleDelete={deleteTodo}/>
+    {:else}
+    <h1>No Todos</h1>
+{/if}

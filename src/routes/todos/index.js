@@ -20,7 +20,7 @@ export async function get({ url }) {
 		return {
 			status: 200,
 			body: {
-				todos: todos,
+				todos,
 			},
 		}
 	} catch {
@@ -47,10 +47,12 @@ export async function post({ request }) {
 				status: 'Success',
 			},
 		}
-	} catch (error) {
+	} catch {
 		return {
 			status: 500,
-			body: 'An error occurred',
+			body: {
+				error: 'Server error',
+			},
 		}
 	}
 }
@@ -60,10 +62,11 @@ export async function put({ request }) {
 		const conn = await connectToDatabase()
 		const collection = conn.db.collection('todos')
 
-		const todo = await request.json()
-		//await collection.updateOne({_id:},)
-
-		//TODO
+		const { _id, name, completed } = await request.json()
+		await collection.updateOne(
+			{ _id: ObjectId(_id) },
+			{ $set: { name, completed } }
+		)
 
 		return {
 			status: 204,
@@ -74,11 +77,33 @@ export async function put({ request }) {
 	} catch {
 		return {
 			status: 500,
-			body: 'An error occurred',
+			body: {
+				error: 'Server error',
+			},
 		}
 	}
 }
 
 export async function del({ request }) {
-	//TODO
+	try {
+		const conn = await connectToDatabase()
+		const collection = conn.db.collection('todos')
+
+		const _id = await request.json()
+		await collection.deleteOne({ _id: ObjectId(_id) })
+
+		return {
+			status: 202,
+			body: {
+				status: 'Success',
+			},
+		}
+	} catch (e) {
+		return {
+			status: 500,
+			body: {
+				error: 'Server error',
+			},
+		}
+	}
 }
