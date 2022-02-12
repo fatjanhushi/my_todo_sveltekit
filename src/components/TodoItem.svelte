@@ -5,13 +5,28 @@
     export let todo
     let editMode = false
 
-    function updateTodo(todo){
-        dispatch('handleUpdate', todo)
+    async function updateTodo(){
+        try{
+            await fetch('/todos', {
+            method: 'PUT',
+            body: JSON.stringify(todo)
+        })
+        }catch{
+            alert("There was an error updating Todo")
+        }
         editMode = false
     }
 
-    function deleteTodo(_id){
-        dispatch('handleDelete', { _id })    
+    async function deleteTodo(_id){
+        try{
+            const res = await fetch('/todos', {
+            method: 'DELETE',
+            body: JSON.stringify(_id)
+        })
+            res.ok && dispatch('successDelete', { _id })
+        }catch{
+            alert("There was an error deleting Todo")
+        }        
     }
 </script>
 

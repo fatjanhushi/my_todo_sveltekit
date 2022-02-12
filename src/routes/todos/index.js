@@ -98,7 +98,7 @@ export async function del({ request }) {
 				status: 'Success',
 			},
 		}
-	} catch (e) {
+	} catch {
 		return {
 			status: 500,
 			body: {
