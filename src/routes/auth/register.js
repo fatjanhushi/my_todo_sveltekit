@@ -7,17 +7,14 @@ export async function get({ request }) {
 }
 
 export async function post({ request }) {
-	//const formData = await request.formData()
-	const data = await request.json()
+	const jsonRes = await request.json()
 
-	console.log(data)
+	console.log(jsonRes)
+
 	return {
-		status: 303,
-		headers: {
-			location: '/todos',
-		},
+		status: 500,
 		body: {
-			error: 'Form validation error',
+			error: 'User not found',
 		},
 	}
 }

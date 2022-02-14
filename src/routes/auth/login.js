@@ -9,9 +9,13 @@ export async function get({ request }) {
 }
 
 export async function post({ request }) {
-	const data = await request.json()
-	console.log(data)
+	const jsonRes = await request.json()
+	const email = jsonRes.email
+
+	console.log(email)
 	return {
-		body: data,
+		body: {
+			error: 'User not found',
+		},
 	}
 }
