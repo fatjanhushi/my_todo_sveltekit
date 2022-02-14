@@ -1,10 +1,11 @@
 <script>
-    import { goto } from '$app/navigation';
+    import { goto } from '$app/navigation'
+    import { validEmail, validName, validPassword, validAll } from '$lib/validationUtils';
 
     let name, email, password, error
+
     async function register(){
-       
-        if(isFormValid()) {
+        if(validAll(email, password, name)) {
             const res = await fetch('/auth/register',{
                 method: 'POST',
                 headers: {
@@ -20,22 +21,16 @@
             const jsonRes = await res.json()
             jsonRes.error ? error=jsonRes.error : goto('/todos')
         }else{
-            console.error('Form is not valid')       
             error = 'Form not valid' 
         }
     }
-
-    function isFormValid(){
-        return false
-    }
-
 </script>
 
-<h1>Login</h1>
+<h1>Register</h1>
 <form on:submit|preventDefault={register}>
-    <input type="text" bind:value={name} placeholder="Name"/>
-    <input type="email" bind:value={email} placeholder="Email"/>
-    <input type="password" bind:value={password} placeholder="Password"/>
+    <input class:valid={validName(name)} type="text" bind:value={name} placeholder="Name"/>
+    <input class:valid={validEmail(email)} type="email" bind:value={email} placeholder="Email"/>
+    <input class:valid={validPassword(password)} type="password" bind:value={password} placeholder="Password"/>
     <button type="submit">Register</button>
 </form>
 {#if (error)}
@@ -45,5 +40,8 @@
 <style>
     p{
         color: red;
+    }
+    .valid{
+        background-color: rgb(158, 240, 125);
     }
 </style>

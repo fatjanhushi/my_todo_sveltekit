@@ -1,18 +1,21 @@
 import { connectToDatabase } from '$lib/mongodb'
+import { validAll } from '$lib/validationUtils'
 
 export async function get({ request }) {
-	return {
-		body: {
-			name: 'Success',
-		},
-	}
+	return {}
 }
 
 export async function post({ request }) {
-	const jsonRes = await request.json()
-	const email = jsonRes.email
+	const { email, password } = await request.json()
 
-	console.log(email)
+	if (!validAll(email, password)) {
+		return {
+			status: 500,
+			body: {
+				error: 'Bad Credentials',
+			},
+		}
+	}
 	return {
 		body: {
 			error: 'User not found',

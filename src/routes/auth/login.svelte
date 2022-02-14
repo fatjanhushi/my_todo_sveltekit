@@ -1,34 +1,45 @@
 <script>
-    let email, password
-    export let error = 'test'
+    import { goto } from '$app/navigation'
+    import { validEmail, validPassword, validAll } from '$lib/validationUtils';
+
+    let email, password, error
 
     async function login(){
-        isFormValid() ?
-        await fetch('/auth/login',{
-            method: 'POST',
-            headers: {
-                'accept': 'application/json'
-            },
-            body: JSON.stringify({
-                    email,
-                    password
-                }
-            )
-        }):
-        console.error('Form is not valid')
-
-        console.log(error)
+        if(validAll(email, password)){
+            const res = await fetch('/auth/login',{
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json'
+                },
+                body: JSON.stringify({
+                        email,
+                        password
+                    }
+                )
+            })
+            const jsonRes = await res.json()
+            jsonRes.error ? error=jsonRes.error : goto('/todos')
+        }else{
+            error = 'Form not valid'
+        }
     }
-
-    function isFormValid(){
-        return true
-    }
-
 </script>
 
 <h1>Login</h1>
 <form on:submit|preventDefault={login}>
-    <input type="email" bind:value={email} placeholder="Email"/>
-    <input type="password" bind:value={password} placeholder="Password"/>
+    <input class:valid={validEmail(email)} type="email" bind:value={email} placeholder="Email"/>
+    <input class:valid={validPassword(password)} type="password" bind:value={password} placeholder="Password"/>
     <button type="submit">Register</button>
 </form>
+{#if (error)}
+    <p>{error}</p>
+{/if}
+
+<style>
+    p{
+        color: red;
+    }
+    .valid{
+        background-color: rgb(158, 240, 125);
+    }
+</style>
