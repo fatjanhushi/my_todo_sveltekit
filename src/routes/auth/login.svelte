@@ -29,7 +29,7 @@
 <form on:submit|preventDefault={login}>
     <input class:valid={validEmail(email)} type="email" bind:value={email} placeholder="Email"/>
     <input class:valid={validPassword(password)} type="password" bind:value={password} placeholder="Password"/>
-    <button type="submit">Register</button>
+    <button type="submit">Login</button>
 </form>
 {#if (error)}
     <p>{error}</p>

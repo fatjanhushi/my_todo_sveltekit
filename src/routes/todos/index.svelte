@@ -1,3 +1,17 @@
+<script context="module">
+    export async function load({session}){
+        console.log("inside load function")
+        console.log(session)
+        if(!session.user){
+            return{
+                //status: 302,
+                //location: '/'
+            }
+        }
+    }
+
+</script>
+
 <script>
     import TodoList from '../../components/TodoList.svelte';
     export let todos
