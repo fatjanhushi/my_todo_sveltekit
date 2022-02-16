@@ -1,6 +1,12 @@
 <script>
-    import {page} from '$app/stores'
-    //console.log($page.url.search)
+    import {page, session} from '$app/stores'
+
+    function logout(){
+        //TODO - logout
+        //delete $session.user
+        console.log($session.user)
+    }
+
 </script>
 
 <main>    
@@ -8,7 +14,14 @@
         <ul>
             <li class:selected={$page.url.search==''}><a href="/">My Todos</a></li>
             <li class:selected={$page.url.search=='?completed=true'}><a href="/?completed=true">Completed</a></li>
-            <li class:selected={$page.url.pathname=='/account'}><a href="/account">Account</a></li>
+            {#if ($session.user)}
+                <li class:selected={$page.url.pathname=='/account'}>
+                    {$session.user.email}
+                    <span><a class="logout" href="/#" on:click="{logout}">(Log Out)</a></span>
+                </li>
+            {:else}
+                <li class:selected={$page.url.pathname=='/auth/login'}><a href="/auth/login">Log In</a></li>
+            {/if}
         </ul>
     </nav>
 
@@ -45,5 +58,9 @@
     }
     .selected{
         background-color: #999;
+    }
+    .logout{
+        text-decoration: underline;
+        text-transform: capitalize;
     }
 </style>

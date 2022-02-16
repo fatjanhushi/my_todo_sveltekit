@@ -11,7 +11,6 @@ export async function handle({ event, resolve }) {
 			cookieId: cookies.session_id,
 		})
 		if (user) {
-			console.log(user)
 			event.locals.user = user
 		}
 	}

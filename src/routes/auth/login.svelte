@@ -1,6 +1,18 @@
+<script context="module">
+    export async function load({fetch, session}){
+        if(session.user){
+            return {
+		        status: 301,
+		        redirect: '/todos',
+	        }
+        }
+        return{}
+    }
+</script>
+
 <script>
     import { goto } from '$app/navigation'
-    import { validEmail, validPassword, validAll } from '$lib/validationUtils';
+    import { validEmail, validPassword, validAll } from '$lib/validationUtils'
 
     let email, password, error
 
