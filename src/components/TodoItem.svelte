@@ -7,7 +7,7 @@
 
     async function updateTodo(){
         try{
-            await fetch('/todos', {
+            await fetch('/todos/todo_endpoint', {
             method: 'PUT',
             body: JSON.stringify(todo)
         })
@@ -19,7 +19,7 @@
 
     async function deleteTodo(_id){
         try{
-            const res = await fetch('/todos', {
+            const res = await fetch('/todos/todo_endpoint', {
             method: 'DELETE',
             body: JSON.stringify(_id)
         })

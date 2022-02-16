@@ -1,13 +1,30 @@
 <script context="module">
-    export async function load({session}){
+    export async function load({fetch, session}){
         console.log("inside load function")
         console.log(session)
+
         if(!session.user){
-            return{
-                //status: 302,
-                //location: '/'
+            return {
+		        status: 303,
+		        headers: {
+			        location: '/auth/login',
+		        },
+	        }
+        }else{
+            const res = await fetch('/todos/todo_endpoint',{
+                'accept': 'application/json'
+            })
+        
+            if(res.ok){
+                const jsonRes = await res.json()
+                return{
+                    props:{
+                        todos: jsonRes.todos,
+                    }
+                }
             }
         }
+       
     }
 
 </script>
@@ -25,7 +42,7 @@
             }
             inputText=''
             try{
-                const res = await fetch('/todos', {
+                const res = await fetch('/todos/todo_endpoint', {
                 method: 'POST',
                 body: JSON.stringify(todo)
             })
@@ -55,7 +72,7 @@
     <button on:click={addTodo} type="submit">Add TODO</button>
 </section>
 
-{#if (todos.length > 0)}
+{#if (todos)}
     <TodoList {todos} on:successDelete={deleteTodo}/>
 {:else}
     <h1>No Todos</h1>

@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 
 export async function get({ url }) {
 	const completed = url.searchParams.get('completed')
-	//console.log(completed)
+	//console.log('completed is ' + completed)
 	let todos
 
 	try {
