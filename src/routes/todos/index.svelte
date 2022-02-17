@@ -1,7 +1,6 @@
 <script context="module">
     export async function load({fetch, session}){
         if(!session.user){
-            console.log('no session.user')
             return {
 		        status: 301,
 		        redirect: '/auth/login',
@@ -17,6 +16,7 @@
             return{
                 props:{
                     todos: jsonRes.todos,
+                    email: session.user.email
                 }
             }
         }
@@ -27,14 +27,15 @@
 
 <script>
     import TodoList from '../../components/TodoList.svelte'
-    export let todos
+    export let todos, email
     let inputText
 
     async function addTodo(){
         if(inputText){
             const todo = {
                 name: inputText,
-                completed: false
+                completed: false,
+                email
             }
             inputText=''
             try{
@@ -57,6 +58,13 @@
         todos = todos.filter(todo=>todo._id!==_id)
     }
 
+    function filterCompleted(){
+        todos = todos.filter(todo => todo.completed===true)
+    }
+    function filterNotCompleted(){
+        todos = todos.filter(todo => todo.completed===false)
+    }
+
 </script>
 
 <svelte:head>
@@ -64,8 +72,13 @@
 </svelte:head>
 
 <section>
-    <input on:keypress={e => e.code === 'Enter' ? addTodo() : ''} type="text" bind:value={inputText} placeholder="What Do I have to do?">
-    <button on:click={addTodo} type="submit">Add TODO</button>
+    <div class="addTodo">
+        <input on:keypress={e => e.code === 'Enter' ? addTodo() : ''} type="text" bind:value={inputText} placeholder="What Do I have to do?">
+        <button on:click={addTodo} type="submit">Add TODO</button>
+    </div>
+    <div class="filters">
+        Show only: (<span on:click={filterCompleted}>completed</span> | <span on:click={filterNotCompleted}>uncompleted</span>)
+    </div>
 </section>
 
 {#if (todos.length>0)}
@@ -73,3 +86,22 @@
 {:else}
     <h1>No Todos</h1>
 {/if}
+
+<style>
+    section{
+        max-width: 70%;
+        margin-inline: auto;
+    }
+    .addTodo{
+        display: flex;
+        min-width: 100%;
+        margin-block: 2em;
+    }
+    input{
+        flex-grow: 1;
+    }
+    span{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>

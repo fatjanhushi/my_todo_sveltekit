@@ -11,7 +11,6 @@
 </script>
 
 <script>
-    import { goto } from '$app/navigation'
     import { validEmail, validPassword, validAll } from '$lib/validationUtils'
 
     let email, password, error
@@ -30,7 +29,7 @@
                 )
             })
             const jsonRes = await res.json()
-            jsonRes.error ? error=jsonRes.error : goto('/todos')
+            jsonRes.error ? error=jsonRes.error : location.reload()
         }else{
             error = 'Form not valid'
         }
@@ -44,11 +43,13 @@
     <button type="submit">Login</button>
 </form>
 {#if (error)}
-    <p>{error}</p>
+    <p class="error">{error}</p>
 {/if}
 
+<p>No account? - <a href="/auth/register">Register new account</a></p>
+
 <style>
-    p{
+    .error{
         color: red;
     }
     .valid{

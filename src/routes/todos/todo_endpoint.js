@@ -1,21 +1,20 @@
 import { connectToDatabase } from '$lib/mongodb'
 import { ObjectId } from 'mongodb'
 
-export async function get({ url }) {
-	const completed = url.searchParams.get('completed')
-	//console.log('completed is ' + completed)
+export async function get({ url, request }) {
+	//get cookieId from the request
+	const cookieId = request.headers.get('cookie').split('=')[1]
+
 	let todos
 
 	try {
 		const conn = await connectToDatabase()
-		const collection = conn.db.collection('todos')
-
-		if (completed) {
-			todos = await collection.find({ completed }).toArray()
-		} else {
-			//select all todos inf searchParam('completed') is not set to true
-			todos = await collection.find({}).toArray()
-		}
+		//find the user from the cookies collection on the database
+		let collection = conn.db.collection('cookies')
+		const user = await collection.findOne({ cookieId })
+		//find all the todos that have user.email
+		collection = conn.db.collection('todos')
+		todos = await collection.find({ email: user.email }).toArray()
 
 		return {
 			status: 200,
