@@ -29,6 +29,8 @@
     import TodoList from '../../components/TodoList.svelte'
     export let todos, email
     let inputText
+    // save a copy of todos array to make filters work
+    let todosCopy = [...todos]
 
     async function addTodo(){
         if(inputText){
@@ -43,7 +45,10 @@
                     method: 'POST',
                     body: JSON.stringify(todo)
                 })
-                if(res.ok) todos = [...todos, todo]
+                if(res.ok) {
+                    todos = [...todosCopy, todo]
+                    todosCopy = [...todos] //also update the copy of todoCopy
+                }
             }catch{
                 alert("There was an error adding Todo")
             }            
@@ -55,14 +60,22 @@
 
     function deleteTodo(event){
         const _id = event.detail._id
-        todos = todos.filter(todo=>todo._id!==_id)
+        todos = todosCopy.filter(todo=>todo._id!==_id)
+        todosCopy = [...todos] //also update the copy of todoCopy
     }
 
+    
     function filterCompleted(){
-        todos = todos.filter(todo => todo.completed===true)
+        //using todosCopy to start with the full copy of the array
+        todos = todosCopy.filter(todo => todo.completed===true)
     }
     function filterNotCompleted(){
-        todos = todos.filter(todo => todo.completed===false)
+        //using todosCopy to start with the full copy of the array
+        todos = todosCopy.filter(todo => todo.completed===false)
+    }
+    
+    function filterAll(){
+        todos = [...todosCopy]
     }
 
 </script>
@@ -77,7 +90,7 @@
         <button on:click={addTodo} type="submit">Add TODO</button>
     </div>
     <div class="filters">
-        Show only: (<span on:click={filterCompleted}>completed</span> | <span on:click={filterNotCompleted}>uncompleted</span>)
+        Filter: <span on:click={filterAll}>All</span> | <span on:click={filterCompleted}>Completed</span> | <span on:click={filterNotCompleted}>Uncompleted</span>
     </div>
 </section>
 
@@ -99,6 +112,22 @@
     }
     input{
         flex-grow: 1;
+        padding: .5rem;
+        border-radius: .5rem;
+        box-shadow: 2px 2px 8px #333;
+        border: .2rem #333 solid;
+    }
+    input:focus{
+        border: .2rem #333 double;
+    }
+    button{
+        margin-left: .5em;
+        padding: .5rem;
+        border-radius: .5rem;
+        background-color: rgb(107, 182, 144);
+        font-weight: bold;
+        box-shadow: 2px 2px 8px #333;
+        text-transform: uppercase;
     }
     span{
         text-decoration: underline;

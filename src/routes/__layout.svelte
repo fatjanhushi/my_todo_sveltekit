@@ -1,23 +1,22 @@
 <script>
     import {page, session} from '$app/stores'
 
-    function logout(){
-        //TODO - logout
-        //delete $session.user
-        console.log($session.user)
+    async function logout(){
+        await fetch('/auth/logout',{ method: 'POST'})
+        location.reload()
     }
+
 
 </script>
 
 <main>    
     <nav>
         <ul>
-            <li class:selected={$page.url.search==''}><a href="/">My Todos</a></li>
-            <li class:selected={$page.url.search=='?completed=true'}><a href="/?completed=true">Completed</a></li>
+            <li class:selected={$page.url.search==''}><a href="/todos">My Todos</a></li>
             {#if ($session.user)}
                 <li class:selected={$page.url.pathname=='/account'}>
                     {$session.user.email}
-                    <span><a class="logout" href="/#" on:click="{logout}">(Log Out)</a></span>
+                    <span><a class="logout" href="/auth/login" on:click="{logout}">(Log Out)</a></span>
                 </li>
             {:else}
                 <li class:selected={$page.url.pathname=='/auth/login'}><a href="/auth/login">Log In</a></li>
