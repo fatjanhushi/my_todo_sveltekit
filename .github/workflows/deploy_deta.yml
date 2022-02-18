@@ -5,10 +5,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2 #Be sure you check-out the repo first. Deta CLI needs access to the files
-      - uses: BogDAAAMN/deta-deploy-action@v1.0.1
+      - name: Checkout repositori
+        uses: actions/checkout@v2 #Be sure you check-out the repo first. Deta CLI needs access to the files
+
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Packages
+        run: npm install
+
+      - name: Build production version
+        run: npm run build
+
+      - name: Deploy production to DETA
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           deta-access-token: ${{ secrets.DETA_TOKEN }} #Deta access token https://docs.deta.sh/docs/cli/auth
           deta-name: 'todo_micro' #Deta Micro name https://docs.deta.sh/docs/cli/commands/#deta-clone
           deta-project: 'a0ncxdk3' #Optional: Deta project name https://docs.deta.sh/docs/cli/commands/#deta-clone
-          deta-project-dir: '/build' #Optional: directory to be deployed on Deta. Default is the root "."
+          deta-project-dir: 'build' #Optional: directory to be deployed on Deta. Default is the root "."
