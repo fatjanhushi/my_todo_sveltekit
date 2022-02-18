@@ -29,6 +29,7 @@
     import TodoList from '../../components/TodoList.svelte'
     export let todos, email
     let inputText
+    
     // save a copy of todos array to make filters work
     let todosCopy = [...todos]
 
