@@ -1,5 +1,6 @@
 <script>
-    import TodoItem from "./TodoItem.svelte"    
+    import TodoItem from "./TodoItem.svelte"
+    import { slide } from 'svelte/transition';
     export let todos
 </script>
 
@@ -7,7 +8,7 @@
 
 <ol>
     {#each todos as todo}
-        <li>
+        <li transition:slide|local>
             <TodoItem {todo} on:successDelete/>
         </li>
     {/each}
