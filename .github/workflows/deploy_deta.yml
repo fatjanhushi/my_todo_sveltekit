@@ -11,4 +11,4 @@ jobs:
           deta-access-token: ${{ secrets.DETA_TOKEN }} #Deta access token https://docs.deta.sh/docs/cli/auth
           deta-name: 'todo_micro' #Deta Micro name https://docs.deta.sh/docs/cli/commands/#deta-clone
           deta-project: 'a0ncxdk3' #Optional: Deta project name https://docs.deta.sh/docs/cli/commands/#deta-clone
-          deta-project-dir: 'build' #Optional: directory to be deployed on Deta. Default is the root "."
+          deta-project-dir: '/build' #Optional: directory to be deployed on Deta. Default is the root "."
