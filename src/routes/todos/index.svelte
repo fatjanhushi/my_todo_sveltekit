@@ -82,7 +82,7 @@
 </script>
 
 <svelte:head>
-    <title>My ToDos</title>
+    <title>My ToDo's</title>
 </svelte:head>
 
 <section>
@@ -98,7 +98,7 @@
 {#if (todos.length>0)}
     <TodoList {todos} on:successDelete={deleteTodo}/>
 {:else}
-    <h1>No Todos</h1>
+    <h1>No Todo's</h1>
 {/if}
 
 <style>

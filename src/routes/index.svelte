@@ -1,3 +1,2 @@
-<h1>Welcome to Todo App</h1>
-<h2>If not login account => redirect to login/register page</h2>
-<h2>If login => redirect to MyTodos</h2>
+<h1>Welcome to the Todo App</h1>
+<h3>Please <a href="/auth/login">Log In</a> or <a href="/auth/register">Register an account</a> to get use this app</h3>
