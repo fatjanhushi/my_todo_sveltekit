@@ -1,12 +1,11 @@
 <script context="module">
-    export async function load({fetch, session}){
-        if(session.user){
-            return {
-		        status: 301,
-		        redirect: '/todos',
-	        }
-        }
-        return{}
+    export function load({session}){
+        return session.user
+        ?   {
+                status: 301,
+                redirect: '/todos'
+            }
+        :   {}
     }
 </script>
 
