@@ -1,40 +1,32 @@
-# create-svelte
+# To-Do app in Sveltekit
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+I built this todo app to try sveltekit and I loved it.
+My goal was to create a full stack app with login a system using SvelteKit and mongoDB for persistence.
 
-## Creating a project
+> Demo: https://todo-sveltekit.herokuapp.com/
 
-If you're seeing this, you've probably already done this step. Congrats!
+It uses cookie authentication. A Cookie for every user is stored on the MongoDb Atlas DB platform. User passwords are encrypted. Each user can see only his todo's. Every time user logs in, the cookie is updated on the db so you can not log in on multiple devices simultaneusly. Routes are protected if you are not logged in.
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+Feel free to clone this app or if you find any issues or if you can improve it, create a pull request.
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
+> ISSUE note: I don't know if it is a problem with sveltekit at the monent, since it's still in beta, but everytime a todo is added from the /todos page it seems that the index is lost and if you update the todo it doesn't work. If you refresh the page everything works ok.
 
-> Note: the `@next` is temporary
+## Run this app
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+You need to provide your own MONGODB_URI and DB_NAME enviroment variables using .env file:
 
 ```bash
+npm install
 npm run dev
 
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
 
-## Building
+## Building for production
 
 To create a production version of your app:
 
 ```bash
 npm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment.
